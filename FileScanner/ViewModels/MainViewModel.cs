@@ -60,20 +60,25 @@ namespace FileScanner.ViewModels
             }
         }
 
-        private void ScanFolder(string dir)
+        private async void ScanFolder(string dir)
         {
             FolderItems = new ObservableCollection<string>(GetDirs(dir));
 
             try
             {
-                foreach (var item in Directory.EnumerateFiles(dir, "*"))
-                {
-                    FolderItems.Add(item);
-                }
+                await test(dir);
             }
-            catch
+            catch (DirectoryNotFoundException e)
             {
-                //send error type private file
+                Console.WriteLine($"The directory was not found: '{e}'");
+            }
+        }
+
+        public async Task test(string dir)
+        {
+            foreach (var item in Directory.EnumerateFiles(dir, "*"))
+            {
+                FolderItems.Add(item);
             }
         }
 
